@@ -2,38 +2,46 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>KAIZEN 提案フォーム</title>
+<title>改善提案書</title>
+<style>
+body { font-family: Arial; padding:20px; max-width:600px; margin:auto; }
+input, textarea { width:100%; margin-bottom:15px; padding:8px; }
+button { padding:12px; width:100%; font-size:16px; margin-bottom:10px; }
+h2 { text-align:center; }
+</style>
 </head>
 <body>
 
-<h2>KAIZEN 提案フォーム</h2>
+<h2>改善提案書</h2>
 
-<label>氏名:</label><br>
-<input type="text" id="name"><br><br>
+<label>氏名:</label>
+<input type="text" id="name">
 
-<label>部署:</label><br>
-<input type="text" id="department"><br><br>
+<label>件名:</label>
+<input type="text" id="title">
 
-<label>改善内容:</label><br>
-<textarea id="content" rows="5"></textarea><br><br>
+<label>改善内容:</label>
+<textarea id="content" rows="5"></textarea>
 
-<label>効果:</label><br>
-<textarea id="effect" rows="4"></textarea><br><br>
+<label>効果:</label>
+<textarea id="effect" rows="4"></textarea>
 
-<button onclick="downloadFile()">TXTファイルをダウンロード</button>
+<button onclick="sendMail()">📧 メールで送信する</button>
 
 <script>
-function downloadFile() {
+function sendMail() {
     const name = document.getElementById("name").value;
-    const dept = document.getElementById("department").value;
+    const title = document.getElementById("title").value;
     const content = document.getElementById("content").value;
     const effect = document.getElementById("effect").value;
 
-    const text =
-`KAIZEN 提案書
+    const subject = encodeURIComponent("改善提案書 - " + title);
+
+    const body = encodeURIComponent(
+`改善提案書
 --------------------------
 氏名: ${name}
-部署: ${dept}
+件名: ${title}
 
 改善内容:
 ${content}
@@ -42,13 +50,10 @@ ${content}
 ${effect}
 
 提出日: ${new Date().toLocaleDateString()}
-`;
+`
+    );
 
-    const blob = new Blob([text], { type: "text/plain" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "Kaizen_" + Date.now() + ".txt";
-    link.click();
+    window.location.href = `mailto:phamkhackhung89@gmail.com?subject=${subject}&body=${body}`;
 }
 </script>
 
