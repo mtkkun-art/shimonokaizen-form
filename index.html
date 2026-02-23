@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>KAIZEN 提案フォーム</title>
+</head>
+<body>
+
+<h2>KAIZEN 提案フォーム</h2>
+
+<label>氏名:</label><br>
+<input type="text" id="name"><br><br>
+
+<label>部署:</label><br>
+<input type="text" id="department"><br><br>
+
+<label>改善内容:</label><br>
+<textarea id="content" rows="5"></textarea><br><br>
+
+<label>効果:</label><br>
+<textarea id="effect" rows="4"></textarea><br><br>
+
+<button onclick="downloadFile()">TXTファイルをダウンロード</button>
+
+<script>
+function downloadFile() {
+    const name = document.getElementById("name").value;
+    const dept = document.getElementById("department").value;
+    const content = document.getElementById("content").value;
+    const effect = document.getElementById("effect").value;
+
+    const text =
+`KAIZEN 提案書
+--------------------------
+氏名: ${name}
+部署: ${dept}
+
+改善内容:
+${content}
+
+効果:
+${effect}
+
+提出日: ${new Date().toLocaleDateString()}
+`;
+
+    const blob = new Blob([text], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "Kaizen_" + Date.now() + ".txt";
+    link.click();
+}
+</script>
+
+</body>
+</html>
